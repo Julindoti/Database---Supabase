@@ -1,0 +1,76 @@
+body{
+
+    color:white;
+    background-color: rgba(2, 6, 25, 0.951);
+    padding:2;
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif    ;
+
+    justify-content: center;
+    align-items: center;
+    
+}
+h2{
+
+    margin-right: auto;
+    margin-left: auto;
+
+
+}
+main{
+
+
+    text-align: left;
+}
+input{
+
+    margin: 10px;
+    border-radius:5px;
+    height: 20px;
+
+
+}
+h2{
+    text-align: center;
+    position: relative;
+    display: flex;
+    margin-left: auto;
+    margin-right: auto;
+
+}
+button{
+
+
+    border-radius: 10px;
+    background-color: rgb(12, 12, 80);
+    color:white;
+    height:40px;
+    width:120px;
+    overflow: hidden;
+    margin-left: auto;
+    margin-right: auto;
+    border:none;
+    transition: all 0.2s ease;
+}
+ button:hover{
+
+   background-color: black;
+   color:white;
+
+}
+
+
+.container-login{
+   position: relative;
+   border-radius: 10px;
+   padding: 15px;
+   gap: 12px;
+   display: flex;
+   flex-direction: column;
+   background-color:black;
+   width:25%;
+   height: 60%;
+   margin-left: auto;
+   margin-right: auto;
+   
+
+}
