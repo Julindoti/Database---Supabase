@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bem-vindo</title>
+    <link rel="stylesheet" href="/global.css">
+</head>
+<body class="imagem">
+    
+    <div class="ajustes">
+    <h2 id="mensagem" class="boas-vindas">Carregando...</h2>
+
+
+    <button onclick="logout()" class="botao">Sair</button>
+
+    
+    </div>
+   
+    <script>
+        const usuarioEmail = localStorage.getItem("usuarioEmail");
+        const usuario = localStorage.getItem("nomeUsuario");
+
+        if (usuarioEmail) {
+            document.getElementById("mensagem").innerText = `Bem-vindo, ${usuario}! Aqui você esta seguro🔥 `;
+        } else {
+            document.getElementById("mensagem").innerText = "Usuário não autenticado!";
+        }
+
+        function logout() {
+            localStorage.removeItem("nomeUsuario")
+            localStorage.removeItem("usuarioEmail");
+            window.location.href = "cadastro.html";
+        }
+    </script>
+
+</body>
+</html>
