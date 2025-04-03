@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ColorArt</title>
+    <link rel="stylesheet" href="/global.css">
+</head>
+<body class="">
+    
+    <button  class="menu-botao" onclick="Change()" ></button >
+    <div class="container-perfil" id="perfil">
+    
+    <div class="perfil"></div>
+
+    <hr style="width: 100%; position: absolute;  border:1.5px solid white  ; top:150px;">
+
+   <ul style="position: absolute; font-size:20px; bottom:40%;">menu
+        <li>teste</li>
+        <li>teste</li>
+       
+        <li><a style="text-decoration:none; color:white !important;" href="/loginSupabase-main/loginSupabase-main/cadastro.html">Sair</a>
+
+    </div>
+
+    <h2 id="mensagem" class="boas-vindas">Carregando...</h2>
+    </div>
+   
+   <canvas id="canvas" height="500" width="700" class="tela"></canvas>
+    
+   <ul id="menu-btns">
+
+        <li id="resize-brush" > 
+            <img src="Icons/brush_24dp_000000_FILL0_wght400_GRAD0_opsz24.svg" class="icons" style="width:30px !important;">
+            <span>Pincel</span>
+            <input type="range" min="0.5" max="20" value="5" class="brush-slide" id="size"> 
+        </li>
+
+        <li id="Borracha">
+            <img  src="Icons/ink_eraser_24dp_000000_FILL0_wght400_GRAD0_opsz24.svg" class="icons    ">
+            <span>Borracha</span>
+        </li>
+
+        <div class="cores"> 
+          <label class="titulo"><img src="Icons/palette_24dp_000000_FILL0_wght400_GRAD0_opsz24.svg"> Paleta de Cores </label>
+        <ul class="opcoes">
+        <li class="opcao" data-cor="white"></li> 
+        <li class="opcao" data-cor="black"></li>
+        <li class="opcao" data-cor="red"></li>
+        <li class="opcao" data-cor="blue"></li>
+        <li class="opcao" data-cor="green"></li>
+        <li class="opcao" data-cor="yellow"></li>
+        </ul>
+        </div>
+        <div class="botoes">
+        <button class="limpar-quadro" onclick="Apagar()">Limpar</button>
+        <button class="salvar-img ">Salvar</button>
+        </div>       
+
+    </ul>
+<script>
+        const canvas=document.getElementById('canvas');
+        const cursor= canvas.getContext('2d');
+        const sizeBrush = document.getElementById('size');
+        const containerPerfil= document.getElementById("perfil");
+        const borracha = document.getElementById("Borracha");
+        let isDrawing= false,
+        brushsize= 5,
+        brushColor= "black";
+
+        window.addEventListener("load", ()=>{
+            
+            canvas.width= canvas.offsetWidth;
+            canvas.height= canvas.offsetHeight;
+        })
+        canvas.addEventListener("mousedown", startDrawing);
+        canvas.addEventListener("mousemove", Drawing);
+        canvas,addEventListener("mouseup", stopDrawing);
+
+        
+        function startDrawing(event){
+        
+            isDrawing=true;
+            cursor.beginPath();
+            cursor.moveTo(event.offsetX, event.offsetY) 
+            cursor.lineWidth= brushsize;
+       
+         
+        }
+
+        function Drawing(event){
+            if(!isDrawing) return;
+            cursor.lineTo(event.offsetX, event.offsetY);
+            cursor.stroke();
+          
+        }
+        function stopDrawing(){
+
+            isDrawing=false;
+        }
+
+        document.addEventListener("click",  (event)=>{
+            if(event.target.classList.contains("opcao")){
+
+                newBrush= event.target.dataset.cor;
+                cursor.strokeStyle= newBrush;
+            }
+
+        })
+        sizeBrush.addEventListener("change", () => brushsize= sizeBrush.value);
+
+     function Change(){
+
+        if (containerPerfil.style.left === "120%"){
+        containerPerfil.style.left="0px";
+        }
+        
+        else{
+
+            containerPerfil.style.left="120%";
+        }
+     }
+     borracha.addEventListener("click", (event)=>{
+
+        canvas.addEventListener("mousedown", erase);
+     })
+
+     function erase(){
+        
+        cursor.beginPath();
+        
+        cursor.clearRect(event.offsetX, event.offsetY,  brushsize, brushsize);    
+     }
+    function Apagar(){
+
+        cursor.clearRect(0,0, canvas.width, canvas.height);
+     }
+        
+       
+        const usuarioEmail = localStorage.getItem("usuarioEmail");
+        const usuario = localStorage.getItem("nomeUsuario");
+
+        if (usuarioEmail) {
+            document.getElementById("mensagem").innerText = `Bem-vindo, ${usuario}! Aqui você esta seguro🔥 `;
+        } else {
+            document.getElementById("mensagem").innerText = "Usuário não autenticado!";
+        }
+
+        function logout() {
+            localStorage.removeItem("nomeUsuario")
+            localStorage.removeItem("usuarioEmail");
+            window.location.href = "cadastro.html";
+        }
+        
+    </script>
+
+</body>
+</html>
