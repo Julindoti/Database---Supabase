@@ -353,7 +353,12 @@ ul{
 
     cursor: pointer;
 }
+.pincel{
 
+
+    color: black;
+
+}
 
  @keyframes piscar {
 

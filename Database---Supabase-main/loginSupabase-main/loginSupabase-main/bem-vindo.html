@@ -18,6 +18,8 @@
    <ul style="position: absolute; font-size:20px; bottom:40%;">menu
         <li>teste</li>
         <li>teste</li>
+        <li><input type="file" id="arquivoinput">
+        </li>
        
         <li><a style="text-decoration:none; color:white !important;" href="/loginSupabase-main/loginSupabase-main/cadastro.html">Sair</a>
 
@@ -30,14 +32,14 @@
     
    <ul id="menu-btns">
 
-        <li id="resize-brush" > 
+        <li id="resize-brush" class="pincel" > 
             <img src="Icons/brush_24dp_000000_FILL0_wght400_GRAD0_opsz24.svg" class="icons" style="width:30px !important;">
             <span>Pincel</span>
             <input type="range" min="0.5" max="20" value="5" class="brush-slide" id="size"> 
         </li>
 
         <li id="Borracha">
-            <img  src="Icons/ink_eraser_24dp_000000_FILL0_wght400_GRAD0_opsz24.svg" class="icons    ">
+            <img  src="Icons/ink_eraser_24dp_000000_FILL0_wght400_GRAD0_opsz24.svg" class="icons">
             <span>Borracha</span>
         </li>
 
@@ -58,24 +60,47 @@
         </div>       
 
     </ul>
-<script>
+<script >
         const canvas=document.getElementById('canvas');
         const cursor= canvas.getContext('2d');
         const sizeBrush = document.getElementById('size');
         const containerPerfil= document.getElementById("perfil");
         const borracha = document.getElementById("Borracha");
+        const pincel =document.querySelectorAll(".pincel");
+        const save = document.querySelector(".salvar-img")
+
         let isDrawing= false,
         brushsize= 5,
+        material= "brush",
         brushColor= "black";
+        
+        const canvasBackground= ()=>{
+
+            cursor.fillStyle="white"
+            cursor.fillRect(0, 0, canvas.width, canvas.height);
+            cursor.fillStyle= selectedColor;
+
+        }
+        const selectedColor = ()=>{
+            document.addEventListener("click",  (event)=>{
+            if(event.target.classList.contains("opcao")){
+                material="brush"
+                newBrush= event.target.dataset.cor;
+                cursor.strokeStyle= newBrush;
+            }
+          })
+        }
+        
 
         window.addEventListener("load", ()=>{
             
             canvas.width= canvas.offsetWidth;
             canvas.height= canvas.offsetHeight;
+            canvasBackground();
         })
         canvas.addEventListener("mousedown", startDrawing);
         canvas.addEventListener("mousemove", Drawing);
-        canvas,addEventListener("mouseup", stopDrawing);
+        canvas.addEventListener("mouseup", stopDrawing);
 
         
         function startDrawing(event){
@@ -90,24 +115,27 @@
 
         function Drawing(event){
             if(!isDrawing) return;
+            if(material==="brush" || material === "eraser"){
+            cursor.strokeStyle= material === "eraser" ? "white" : selectedColor();
             cursor.lineTo(event.offsetX, event.offsetY);
             cursor.stroke();
-          
+            console.log(material)
+
+            }
         }
         function stopDrawing(){
 
             isDrawing=false;
         }
-
-        document.addEventListener("click",  (event)=>{
-            if(event.target.classList.contains("opcao")){
-
-                newBrush= event.target.dataset.cor;
-                cursor.strokeStyle= newBrush;
-            }
-
-        })
-        sizeBrush.addEventListener("change", () => brushsize= sizeBrush.value);
+     
+     
+        sizeBrush.addEventListener("change", () => {
+            
+            material="brush";
+            brushsize= sizeBrush.value;
+            
+        
+        });
 
      function Change(){
 
@@ -122,19 +150,31 @@
      }
      borracha.addEventListener("click", (event)=>{
 
-        canvas.addEventListener("mousedown", erase);
+        material= "eraser";
+        console.log('eraser')
      })
 
-     function erase(){
+     function erase(event){
         
         cursor.beginPath();
-        
-        cursor.clearRect(event.offsetX, event.offsetY,  brushsize, brushsize);    
+        cursor.clearRect(event.offsetX, event.offsetY,  brushsize, brushsize);
+         
      }
+     save.addEventListener("click", ()=>{
+
+        const link= document.createElement("a")
+        link.download= `${Date.now}.jpg`;
+        link.href= canvas.toDataURL();
+        link.click();
+
+
+     })
     function Apagar(){
 
         cursor.clearRect(0,0, canvas.width, canvas.height);
-     }
+        canvasBackground();
+
+        }
         
        
         const usuarioEmail = localStorage.getItem("usuarioEmail");
@@ -152,6 +192,53 @@
             window.location.href = "cadastro.html";
         }
         
+        const supabase = window.supabase.createClient(
+            "https://nzvzwpffucfzyliezfef.supabase.co",
+            "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im56dnp3cGZmdWNmenlsaWV6ZmVmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDI5OTA0MjksImV4cCI6MjA1ODU2NjQyOX0.O5SJfOmzOKxzITvMcn_3lrGvuD1m_VIHnmQZe5d2vmo"
+        );
+        async function uploadImagem(arquivo){
+
+            const {data: userData, error:userError}= await supabase.auth.getUser();
+            const user= userData?.user;
+
+            if(!user || !arquivo){
+
+                alert("vai dar não")
+                return;
+            }
+            const caminhoArquivo = `usuarios/${user.id}/${Date.now()}_${arquivo.name}`;
+
+            const {error: uploadError}= await supabase.storage
+            .from("imagens.usuario")
+            .upload(caminhoArquivo, arquivo)
+
+            if (uploadError){
+
+                alert("Deu ruim cara")
+                return;
+            }
+            const {data: urlData}= supabase.storage
+            .from("imagens.usuario")
+            .getPublicUrl(caminhoArquivo)
+
+        }
+        const publicUrl = urlData.publicUrl;
+        
+        const {error: dbError }= await supabase.from("usuarios")
+        .insert([
+        {
+            user_id:user.id, 
+            imagem_url:publicUrl,
+        },
+        ]);
+        if(dbError){
+        
+        alert('deu ruim na ulrima etapa do upload')
+        }
+        else{
+
+           alert("PASSOU");
+        }
     </script>
 
 </body>
