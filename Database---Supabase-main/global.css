@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined");
+
 
 body{
 
@@ -78,7 +78,14 @@ ul{
     list-style:none;
      
 }
+img .imagem{
 
+    width: 200px;
+    height: 200px;
+    gap:20px;
+
+
+}
 #mensagem{
 
     justify-content: center;
@@ -130,15 +137,7 @@ ul{
         display: flex;
 
  }
- .imagem{
-
-
-    background-image: url("/Database---Supabase-main/loginSupabase-main/loginSupabase-main/IMAGES/campfire1.gif");
-    background-repeat: no-repeat;
-    background-size: cover;
-    opacity: 0.8    ;
-
- }
+ 
  .botao{
 
     position: absolute !important;
@@ -180,6 +179,7 @@ ul{
 
 
  }
+
  .perfil{
 
        position: relative;
@@ -357,6 +357,50 @@ ul{
 
 
     color: black;
+
+}
+.galeria-titulo{
+
+        text-align: center;
+        display: flex;
+        position: relative;
+        justify-content: center;
+        margin-left: auto ;
+        margin-right: auto;
+
+}
+.galeria-container{
+
+            justify-content: center;
+            justify-self: center;
+            position: relative;
+            display: flex ;
+            flex-direction: row;
+            width: 800px;
+            height: auto;
+            margin-left: auto;
+            margin-right:auto;
+            background-color:white;   
+            gap:20px;  
+
+}
+.imagens-galeria{
+
+        border-radius:10px;
+        width:200px;
+        height: 200px;
+        display: flex;
+        position: absolute;
+        background-color: white;
+        justify-self: center;
+        
+        
+
+
+}
+.imagem{
+
+    width: 200px;
 
 }
 
