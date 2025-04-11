@@ -9,8 +9,8 @@
     <link rel="stylesheet" href="/global.css">
    
 </head>
-    <body>
-
+    <body id="body">
+ 
     <header>
 
         <img src="/loginSupabase-main/loginSupabase-main/IMAGES/pngwing.com.png" class="logo">ColorArt
@@ -25,13 +25,9 @@
 
    <ul style="position: absolute; font-size:10px; bottom:40%;">
 
-        <li class="linha">Configurações</li>
-        <li class="linha">Conta</li>
-        
-     
-
-       
-        <li ><a style="text-decoration:none; color:white !important; "  class="linha espaco" onclick="signOut()" href="/loginSupabase-main/loginSupabase-main/cadastro.html">Sair</a>
+        <li class="linha" id="dark_light"onclick="Modo()">Modo Escuro</li>
+        <li class="linha">Conta</li>   
+        <li ><a style="text-decoration:none; color:white !important;"  class="linha espaco" onclick="signOut()" href="/loginSupabase-main/loginSupabase-main/cadastro.html">Sair</a></li>
         <p class="copy"">&COPY; JGT-ltda</p>
 
     </div>
@@ -66,7 +62,7 @@
         </ul>
         </div>
         <div class="botoes">
-        <button class="limpar-quadro" onclick="Apagar()">Limpar</button>
+        <button class="limpar-quadro" onclick="Apagar()" href="/loginSupabase-main/loginSupabase-main/IMAGES/sun-svgrepo-com.svg" >Limpar</button>
         <button class="salvar-img ">Salvar</button>
         </div>       
 
@@ -89,14 +85,18 @@
         const save = document.querySelector(".salvar-img");
         const galeria= document.getElementById("galeria");
         const teste= document.getElementById("teste");
-        const menu_btn= document.querySelector(".menu-botao")
+        const menu_btn= document.querySelector(".menu-botao");
+        const dark_light = document.getElementById("dark_light");
+        const body=document.getElementById("body");
+        const modos= document.getElementById("modos");
+     
 
         let isDrawing= false,
         brushsize= 5,
         material= "brush",
         brushColor= "black";
         
-        const canvasBackground= ()=>{
+        const canvasBackground =()=>{
 
             cursor.fillStyle="white"
             cursor.fillRect(0, 0, canvas.width, canvas.height);
@@ -158,6 +158,26 @@
             
         
         });
+
+     function Modo(){
+
+        if(body.style.backgroundColor=== "rgba(2, 6, 25, 0.951)"){
+      
+            body.style.backgroundColor="rgba(79, 96, 248, 0.938)";
+            body.style.color="black";
+            dark_light.innerText="Modo Claro";
+            
+           
+
+        }else{
+
+             body.style.backgroundColor="rgba(2, 6, 25, 0.951)";
+             body.style.color="white";
+             dark_light.innerText="Modo Escuro";
+             b.style.color="white";
+
+        }
+     } 
 
      function Change(){
 

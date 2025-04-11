@@ -11,7 +11,8 @@
 <body>
 <main>
     <div class="meio">
-    <h2 id="texto">Login</h2>
+    <h2 class="cadastro-t">Seja bem-vindo(a) ao nosso site!</h2>
+    <h2 id="texto">Faça seu Login:</h2>
     
     <form onsubmit="return false;" id="form-login" class="containers">
         <label>Email</label>
@@ -54,29 +55,42 @@
        const containerlogin= document.getElementById("form-login")
        const containerCad=document.getElementById("form-cadastro")
        const titulo= document.getElementById("texto");
+       const meio= document.querySelector(".meio");
+       const botao= document.getElementById("botao");
        let HTMLguardado="";
             
 
       function puxar(){
 
+        meio.classList.add("sumir")
+        
+        setTimeout(()=>{
+            meio.classList.remove("sumir")
+        }, 2400)
 
-       
-        containerCad.style.display="flex";
-        containerlogin.style.display="none";
-        titulo.innerText="Cadastro";
-       
-        
-        
+        setTimeout(()=>{
+
+            containerCad.style.display="flex";
+            containerlogin.style.display="none";
+            titulo.innerText="Cadastre-se em nosso site:";
+
+        },1200)
        }
       function puxar2(){
 
+        meio.classList.add("sumir")
+      
+        setTimeout(()=>{    
+        meio.classList.remove("sumir")
+        }, 2400)
 
-        containerCad.style.display="none";
-        containerlogin.style.display="flex";
-        titulo.innerText="Login";
-      }
+        setTimeout(()=>{
 
-
+            containerCad.style.display="none";
+            containerlogin.style.display="flex";
+            titulo.innerText="Faça seu Login:";
+            },1200)
+       }
         const supabase = window.supabase.createClient(
             "https://nzvzwpffucfzyliezfef.supabase.co",
             "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im56dnp3cGZmdWNmenlsaWV6ZmVmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDI5OTA0MjksImV4cCI6MjA1ODU2NjQyOX0.O5SJfOmzOKxzITvMcn_3lrGvuD1m_VIHnmQZe5d2vmo"
@@ -128,6 +142,7 @@
                 containerCad.style.display="none";
                 containerlogin.style.display="flex";
                 document.getElementById("mensagem").innerText=""
+                
                 }, 4500)
             }
         }
